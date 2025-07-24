@@ -34,19 +34,13 @@ class LogParser:
         return self.handlers
 
     def parse_file(self):
-        total_count = 0
         for i in self.handlers:
-            self.parse_info.append({i: {'total': 0}})
-            # print(self.parse_info)
+            self.parse_info.append({i: [{"total": 0}]})
             for j in self.data:
                 for el in range(len(self.parse_info)):
-                    # print(j["url"])
-                    # print(self.parse_info[el])]
-                    print(list(self.parse_info[el].keys())[0])
-                    if j["url"] == list(self.parse_info[el].keys())[0]:
-                        print(self.parse_info[el]['total'])
-                        self.parse_info[el]['total'] += 1
-
+                    url_key = list(self.parse_info[el].keys())[0]
+                    if j["url"] == url_key:
+                        self.parse_info[el][url_key][0]["total"]+=1
 
 
 
