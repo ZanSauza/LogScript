@@ -1,1 +1,1 @@
-` python main.py --file example1.log`
+` python main.py --file example1.log --report average`
