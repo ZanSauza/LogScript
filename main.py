@@ -28,7 +28,7 @@ class LogParser:
         return self.data
 
     def parsing_items(self, sstr, llist):
-        for i in self.read_file():
+        for i in self.data:
             if i[sstr] not in llist:
                 llist.append(i[sstr])
 
@@ -52,39 +52,8 @@ class LogParser:
                     self.parse_info[len(self.parse_info) - 1][url_key][1]["avg_response_time"] += endpoint["response_time"]
                     for i in user_agent_keys_and_vals:
                         if endpoint["http_user_agent"] in i:
-                            print(1)
-                            for key, value in i.items():
-                                print(f"{key}: {value}")
-                                value += 1
+                            i[endpoint["http_user_agent"]] += 1
 
-
-                # for i in user_agent_keys_and_vals:
-                #     print(i[endpoint["http_user_agent"]])
-                #     if (endpoint["http_user_agent"] == j for j in user_agent_keys_and_vals):
-                #
-                #         i[endpoint["http_user_agent"]] += 1
-
-
-                    #     print(endpoint["http_user_agent"])
-                    #     print(list(user_agent_keys_and_vals[-1].keys())[-1])
-
-                        # print(user_agent_keys_and_vals[-1].get(endpoint["http_user_agent"]))
-
-
-
-
-
-
-                    # if len(self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"]) < 0:
-                    #     self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"].append(
-                    #         {endpoint["http_user_agent"]: 1})
-                    # elif self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"][0].keys():
-                    #     pass
-
-                    # else:
-                    #     print("else")
-                    # if endpoint["http_user_agent"] in self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"]:
-                    # self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"][endpoint["http_user_agent"]] += 1
 
         for endpoint in self.parse_info:
             list(endpoint.values())[0][1]["avg_response_time"] /= list(endpoint.values())[0][0].get("total")
@@ -105,6 +74,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     parser = LogParser(args.file)
+    parser.read_file()
     parse_handler = parser.parsing_items("url", parser.handlers)
     parse_user_agent_handler = parser.parsing_items("http_user_agent", parser.user_agent)
     print(parser.handlers)
