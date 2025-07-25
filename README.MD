@@ -1,1 +1,1 @@
-` python main.py --file example2.log`
+` python main.py --file example1.log`

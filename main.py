@@ -8,6 +8,7 @@ class LogParser:
     def __init__(self, file_path):
         self.data = []
         self.handlers = []
+        self.user_agent = []
         self.parse_info = []
         self.file_path = file_path
 
@@ -26,27 +27,69 @@ class LogParser:
 
         return self.data
 
-    def parse_handler(self):
+    def parsing_items(self, sstr, llist):
         for i in self.read_file():
-            if i["url"] not in self.handlers:
-                self.handlers.append(i["url"])
+            if i[sstr] not in llist:
+                llist.append(i[sstr])
 
-        return self.handlers
+        return llist
 
     def parse_file(self):
         for handler in self.handlers:
-            self.parse_info.append({handler: [{"total": 0}, {"avg_response_time": 0}]})
+            self.parse_info.append({handler:
+                [
+                    {"total": 0},
+                    {"avg_response_time": 0},
+                    {"user_agent": [{agent: 0} for agent in self.user_agent]},
+                ]
+            }
+            )
             for endpoint in self.data:
-                url_key = list(self.parse_info[len(self.parse_info)-1].keys())[0]
+                url_key = list(self.parse_info[len(self.parse_info) - 1].keys())[0]
+                user_agent_keys_and_vals = self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"]
                 if endpoint["url"] == url_key:
                     self.parse_info[len(self.parse_info) - 1][url_key][0]["total"] += 1
                     self.parse_info[len(self.parse_info) - 1][url_key][1]["avg_response_time"] += endpoint["response_time"]
+                    for i in user_agent_keys_and_vals:
+                        if endpoint["http_user_agent"] in i:
+                            print(1)
+                            for key, value in i.items():
+                                print(f"{key}: {value}")
+                                value += 1
+
+
+                # for i in user_agent_keys_and_vals:
+                #     print(i[endpoint["http_user_agent"]])
+                #     if (endpoint["http_user_agent"] == j for j in user_agent_keys_and_vals):
+                #
+                #         i[endpoint["http_user_agent"]] += 1
+
+
+                    #     print(endpoint["http_user_agent"])
+                    #     print(list(user_agent_keys_and_vals[-1].keys())[-1])
+
+                        # print(user_agent_keys_and_vals[-1].get(endpoint["http_user_agent"]))
+
+
+
+
+
+
+                    # if len(self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"]) < 0:
+                    #     self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"].append(
+                    #         {endpoint["http_user_agent"]: 1})
+                    # elif self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"][0].keys():
+                    #     pass
+
+                    # else:
+                    #     print("else")
+                    # if endpoint["http_user_agent"] in self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"]:
+                    # self.parse_info[len(self.parse_info) - 1][url_key][2]["user_agent"][endpoint["http_user_agent"]] += 1
 
         for endpoint in self.parse_info:
             list(endpoint.values())[0][1]["avg_response_time"] /= list(endpoint.values())[0][0].get("total")
-            list(endpoint.values())[0][1]["avg_response_time"] = round(list(endpoint.values())[0][1]["avg_response_time"], 3)
-
-
+            list(endpoint.values())[0][1]["avg_response_time"] = round(
+                list(endpoint.values())[0][1]["avg_response_time"], 3)
 
 
 
@@ -62,6 +105,9 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     parser = LogParser(args.file)
-    parser.parse_handler()
+    parse_handler = parser.parsing_items("url", parser.handlers)
+    parse_user_agent_handler = parser.parsing_items("http_user_agent", parser.user_agent)
+    print(parser.handlers)
+    print(parser.user_agent)
     parser.parse_file()
     print(parser.parse_info)
