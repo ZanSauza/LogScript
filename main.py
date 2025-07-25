@@ -44,6 +44,7 @@ class LogParser:
 
         for endpoint in self.parse_info:
             list(endpoint.values())[0][1]["avg_response_time"] /= list(endpoint.values())[0][0].get("total")
+            list(endpoint.values())[0][1]["avg_response_time"] = round(list(endpoint.values())[0][1]["avg_response_time"], 3)
 
 
 
