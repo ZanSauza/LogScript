@@ -38,17 +38,14 @@ class LogParser:
             self.parse_info.append({handler: [{"total": 0}, {"avg_response_time": 0}]})
             for endpoint in self.data:
                 url_key = list(self.parse_info[len(self.parse_info)-1].keys())[0]
-                print(url_key)
                 if endpoint["url"] == url_key:
-                    self.parse_info[len(self.parse_info) - 1][url_key][0]["total"]+=1
+                    self.parse_info[len(self.parse_info) - 1][url_key][0]["total"] += 1
                     self.parse_info[len(self.parse_info) - 1][url_key][1]["avg_response_time"] += endpoint["response_time"]
 
         for endpoint in self.parse_info:
-            print(list(endpoint.values())[0][1].get["avg_response_time"])
-            avg_time = list(endpoint.values())[0][1].get["avg_response_time"]
-            total = list(endpoint.values())[0][0].get["total"]
-            avg_time = round(avg_time / total, 2)
-            print(avg_time)
+            list(endpoint.values())[0][1]["avg_response_time"] /= list(endpoint.values())[0][0].get("total")
+
+
 
 
 
