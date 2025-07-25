@@ -34,13 +34,22 @@ class LogParser:
         return self.handlers
 
     def parse_file(self):
-        for i in self.handlers:
-            self.parse_info.append({i: [{"total": 0}]})
-            for j in self.data:
-                for el in range(len(self.parse_info)):
-                    url_key = list(self.parse_info[el].keys())[0]
-                    if j["url"] == url_key:
-                        self.parse_info[el][url_key][0]["total"]+=1
+        for handler in self.handlers:
+            self.parse_info.append({handler: [{"total": 0}, {"avg_response_time": 0}]})
+            for endpoint in self.data:
+                url_key = list(self.parse_info[len(self.parse_info)-1].keys())[0]
+                print(url_key)
+                if endpoint["url"] == url_key:
+                    self.parse_info[len(self.parse_info) - 1][url_key][0]["total"]+=1
+                    self.parse_info[len(self.parse_info) - 1][url_key][1]["avg_response_time"] += endpoint["response_time"]
+
+        for endpoint in self.parse_info:
+            print(list(endpoint.values())[0][1].get["avg_response_time"])
+            avg_time = list(endpoint.values())[0][1].get["avg_response_time"]
+            total = list(endpoint.values())[0][0].get["total"]
+            avg_time = round(avg_time / total, 2)
+            print(avg_time)
+
 
 
 
