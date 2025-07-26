@@ -1,1 +1,1 @@
-` python main.py --file example1.log --report average`
+` python main.py --file example2.log --report average --date 2025-26-06`
