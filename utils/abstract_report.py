@@ -37,7 +37,7 @@ class ReportAverage(BaseLogParserReport):
             self.parse_info[len(self.parse_info) - 1][url_key][1]["avg_response_time"] += endpoint[
                 "response_time"]
 
-    def generate_report(self, timestamp: Union[str, None] = None) -> Union[str, None]:
+    def generate_report(self, timestamp: Union[str, None] = None) -> Union[str, List[any]]:
         for handler in self.handlers:
             self.parse_info.append({handler:
                 [
@@ -54,6 +54,7 @@ class ReportAverage(BaseLogParserReport):
                     list(endpoint_h.values())[0][1]["avg_response_time"], 3)
         except ZeroDivisionError:
             return "cписок значений эндпоинтов пуст, проверте корректность входных данных возможно указана некорректная дата"
+        return self.parse_info
 
 
 class ReportUserAgent(BaseLogParserReport):

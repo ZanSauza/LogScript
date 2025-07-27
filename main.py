@@ -32,9 +32,10 @@ def main():
         date = f'{arg_date[0] + arg_date[1] + arg_date[2] + arg_date[3] + arg_date[4] + arg_date[8] + arg_date[9] + arg_date[7] + arg_date[5] + arg_date[6]}'
 
     if not arg_date and not arg_useragent:
-        report_average.generate_report()
+        report_average_info = report_average.generate_report()
         table1 = AverageTableCreator()
-        print(table1.create_table(report_average.parse_info))
+        print(report_average_info)
+        print(table1.create_table(report_average_info))
     if arg_date and not arg_useragent:
         a_data = report_average.generate_report(date)
         if a_data is None:
