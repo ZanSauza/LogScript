@@ -50,7 +50,6 @@ def main():
                 print(a_data)
 
         if arg_date and arg_useragent:
-            print(report_user_agent.user_agents)
             u_data = report_user_agent.generate_report(date)
             if type(u_data) != str:
                 table4 = UserAgentTableCreator(parse_user_agent_handler)
