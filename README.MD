@@ -7,7 +7,8 @@
 Пути к файлам и название отчета передаются как параметры, 
 например python main.py --file file.log --report average.
 ```
-
+## зависимости:
+`pip install -r requirements.txt`
 
 
 ## примеры комманд:
