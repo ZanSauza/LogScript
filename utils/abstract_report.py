@@ -54,6 +54,7 @@ class ReportAverage(BaseLogParserReport):
                     list(endpoint_h.values())[0][1]["avg_response_time"], 3)
         except ZeroDivisionError:
             return "cписок значений эндпоинтов пуст, проверте корректность входных данных возможно указана некорректная дата"
+
         return self.parse_info
 
 
@@ -73,7 +74,7 @@ class ReportUserAgent(BaseLogParserReport):
                 if endpoint["http_user_agent"] in user_agent:
                     user_agent[endpoint["http_user_agent"]] += 1
 
-    def generate_report(self, timestamp: Union[str, None] = None) -> None:
+    def generate_report(self, timestamp: Union[str, None] = None) -> List[any]:
         for handler in self.handlers:
             self.parse_info.append({handler:
                 [
@@ -82,3 +83,5 @@ class ReportUserAgent(BaseLogParserReport):
                 ]
             })
             self.date(timestamp)
+
+        return self.parse_info

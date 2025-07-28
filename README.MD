@@ -1,1 +1,1 @@
-` python main.py --file example1.log --report average`
+` python main.py --file example1.log --user agent --date 2025-23-06`
